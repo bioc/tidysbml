@@ -128,7 +128,7 @@ Each function described in this section performs a control on the input format c
 
 ### Integration with Bioconductor packages
 
-This section provides R code to incorporate tidysbml dataframes with other Bioconductor packages. Here are shown examples of integration for RCy3 and biomaRt packages. 
+This section provides R code to incorporate tidysbml dataframes with other Bioconductor packages. Here are shown examples of integration for RCy3 [@rcy3] and biomaRt [@biomart] packages. 
 
 RCy3 package permits communication between R and Cytoscape softwares. It is possible to import graph in form of edgelist (i.e. dataframe with source and target columns) by simple (or heavier) data manipulation through dataframes as
 
