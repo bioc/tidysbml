@@ -24,7 +24,7 @@ abstract: "The Systems Biology Markup Language (SBML) is a XML-based format used
 editor_options:
   markdown:
     wrap: sentence
-bibliography: bibliography_vignette_tidysbml.bibtex
+bibliography: bibliography_vignette_tidysbml.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -134,8 +134,7 @@ RCy3 package permits communication between R and Cytoscape softwares. It is poss
 
 ```{r}
 library(dplyr)
-edgelist <- df_speciesWithinReactions %>% select("reaction_id", "species") %>% 
-colnames(edgelist) <- c("source", "target")
+edgelist <- df_speciesWithinReactions %>% select("reaction_id", "species") %>% `colnames<-`(c("source", "target"))
 RCy3::createNetworkFromDataFrames(edges = edgelist)
 ```
 
@@ -182,6 +181,7 @@ df_mart_uniprot <- getBM( attributes = c("uniprot_gn_id", "uniprot_gn_symbol",  
                           filters = "uniprot_gn_id",
                           values = vec_ids,
                           mart = mart)
+df_mart_uniprot
 ```
 
 ### References
