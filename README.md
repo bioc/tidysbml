@@ -6,7 +6,7 @@ The package provides conversion from a SBML document to R dataframes. Each SBML 
 To install the package from Github, run 
 
 ```
-#install.packages("devtools") #decomment if devtools is not already installed
+#install.packages("devtools")
 
 library(devtools)
 install_github("veronicapaparozzi/tidysbml", build_vignettes = TRUE)
