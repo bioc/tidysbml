@@ -130,12 +130,12 @@ Each function described in this section performs a control on the input format c
 
 This section provides R code to incorporate tidysbml dataframes with other Bioconductor packages. Here are shown examples of integration for RCy3 [@rcy3] and biomaRt [@biomart] packages. 
 
-RCy3 package permits communication between R and Cytoscape softwares. It is possible to import graph in form of edgelist (i.e. dataframe with source and target columns) by simple (or heavier) data manipulation through dataframes as
+RCy3 package permits communication between R and Cytoscape softwares. After launching Cytoscape, it is possible to import graph in form of edgelist (i.e. dataframe with source and target columns) by simple (or heavier) data manipulation through dataframes as
 
-```{r}
+```{r eval=FALSE}
 library(dplyr)
 edgelist <- df_speciesWithinReactions %>% select("reaction_id", "species") %>% `colnames<-`(c("source", "target"))
-RCy3::createNetworkFromDataFrames(edges = edgelist)
+RCy3::createNetworkFromDataFrames(edges = edgelist) # while running Cytoscape
 ```
 
 BiomaRt, instead, is an annotation package providing access to external public databases. One possible usage, for instance, is to visualize info about Uniprot ids reported in SBML for Species, here considering only those composed by multiple entities (i.e. multiple ids). First, extract URIs data about species from Annotation column with *bqbiol:hasPart* content

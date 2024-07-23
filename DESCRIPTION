@@ -1,7 +1,7 @@
 Package: tidysbml
 Type: Package
 Title: Extract SBML's data into dataframes
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: person("Veronica", "Paparozzi", role = c("aut", "cre"), email = "veronicapaparozzi1@gmail.com")
 Author: Veronica Paparozzi [aut, cre]
 Maintainer: Veronica Paparozzi <veronicapaparozzi1@gmail.com>
