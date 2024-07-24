@@ -132,7 +132,7 @@ This section provides R code to incorporate tidysbml dataframes with other Bioco
 
 RCy3 package permits communication between R and Cytoscape softwares. After launching Cytoscape, it is possible to import graph in form of edgelist (i.e. dataframe with source and target columns) by simple (or heavier) data manipulation through dataframes as
 
-```{r eval=FALSE}
+```{r error=FALSE}
 library(dplyr)
 edgelist <- df_speciesWithinReactions %>% select("reaction_id", "species") %>% `colnames<-`(c("source", "target"))
 RCy3::createNetworkFromDataFrames(edges = edgelist) # while running Cytoscape
