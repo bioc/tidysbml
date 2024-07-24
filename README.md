@@ -1,6 +1,6 @@
 # tidysbml
 
-The package provides conversion from a SBML document to R dataframes. Each SBML component (i.e. listOfCompartments, listOfSpecies, listOfReactions) is translated into a dataframe to access information. 
+The package provides conversion from a SBML document to R dataframes. SBML components (i.e. listOfCompartments, listOfSpecies, listOfReactions) are translated into dataframes to access information. 
 
 # Installation 
 To install the package from Github, run 
