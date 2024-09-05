@@ -1,4 +1,8 @@
 inst/doc
+inst/extdata
+inst/.DS_Store
+inst/extdata/.DS_Store
+tests/.DS_Store
 .Rproj.user
 tidysbml.Rproj
 .Rhistory

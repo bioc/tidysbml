@@ -15,10 +15,10 @@ BiocManager::install("tidysbml")
 To install the package from Github, run 
 
 ```
-#install.packages("devtools")
+if (!require("devtools", quietly = TRUE))
+    install.packages("devtools")
 
-library(devtools)
-install_github("veronicapaparozzi/tidysbml", build_vignettes = TRUE)
+devtools::install_github("veronicapaparozzi/tidysbml", build_vignettes = TRUE)
 ```
 
 ## Contact 
