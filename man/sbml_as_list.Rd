@@ -18,17 +18,17 @@ sbml converted into a R list
 This function converts a sbml file into a R list.
 }
 \details{
-By selecting the argument 'component' as 'all' it returns the sbml-converted list looking at the highest level (i.e. 'sbml' tag), whereas if it equals either 'species', 'reactions' or 'compartments', the list can be zoomed to species/reactions/compartments level.
-The first option permits to use the resulting list as input for as_dfs(), while the other options provide the input for all the other functions belonging to this package (functions as_df-like).
+By selecting the argument 'component' as 'all' it returns the sbml-converted list looking at the highest level (i.e. 'sbml' tag), whereas if it equals either 'species', 'reactions' or 'compartments', the list can be restricted to the species/reactions/compartments level.
+The first option permits to use the resulting list as input for as_dfs() function, while the other options provide the input for as_df() function.
 }
 \examples{
-filepath = system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml")
+filepath <- system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml")
 
-sbml_list = sbml_as_list(filepath, "all")   ## returns the R list with the entire sbml model
+sbml_list <- sbml_as_list(filepath, "all") ## returns the R list with the entire sbml model
 
-sbml_as_list(filepath, "species")   ## returns the R list restricted to the list of species
+sbml_as_list(filepath, "species") ## returns the R list restricted to the list of species
 
-sbml_as_list(filepath, "reactions")   ## returns the R list restricted to the list of reactions
+sbml_as_list(filepath, "reactions") ## returns the R list restricted to the list of reactions
 
-sbml_as_list(filepath, "compartments")   ## returns the R list restricted to the list of components
+sbml_as_list(filepath, "compartments") ## returns the R list restricted to the list of components
 }

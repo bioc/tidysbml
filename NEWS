@@ -1,0 +1,46 @@
+tidysbml version 0.99.7 (Release date: 2024-09-) : 
+
+- edit DESCRIPTION: inserted R version, URL, BugReports
+- add unit tests
+- edit vignette: new installation section, changed dataframes names, changed annotation delimiter, removed partial extraction
+- edit R code: improving vectorization, fixing repetitions, 'styler' usage
+- new function "sbml_validate()":
+    the function validates SBML schemas up to Level 2 Version 5
+
+----------------------------------------------
+tidysbml version 0.99.6 (Release date: 2024-07-24) : 
+
+- edit DESCRIPTION: added RCy3 and biomaRt packages in Suggest field
+
+----------------------------------------------
+tidysbml version 0.99.5 (Release date: 2024-07-24) : 
+
+- fixing BiocCheck errors/warnings
+
+----------------------------------------------
+tidysbml version 0.99.4 (Release date: 2024-07-24) : 
+
+- fixing BiocCheck errors/warnings
+
+----------------------------------------------
+tidysbml version 0.99.3 (Release date: 2024-07-24) : 
+
+- fixing BiocCheck errors
+
+----------------------------------------------
+tidysbml version 0.99.2 (Release date: 2024-07-24) : 
+
+- add orcid in DESCRIPTION
+
+----------------------------------------------
+tidysbml version 0.99.1 (Release date: 2024-07-23) : 
+
+- edit vignette: edit RCy3 chunk (eval = FALSE)
+
+----------------------------------------------
+tidysbml version 0.99.0 (Release date: 2024-05-25) : 
+
+- edit vignette: update bibliography, new interoperability examples
+- add one new file in external data
+- vignette file renamed
+- add files to local repository

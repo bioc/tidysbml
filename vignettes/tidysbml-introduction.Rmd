@@ -11,10 +11,10 @@ vignette: >
   %\VignetteIndexEntry{Introduction to the tidysbml package}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-abstract: "The Systems Biology Markup Language (SBML) is a XML-based format used to
+abstract: "The Systems Biology Markup Language (SBML) is a format based on XML (eXtensible Markup Language) used to
   describe biological pathways in a sherable and detailed standard form. This vignette
   aims to introduce and show the functions workflow to be used to convert an SBML
-  file into a list of dataframes in R through the *tidysbml* package. The package
+  file into a list of R dataframes through the *tidysbml* package. The package
   provides conversion for all SBML levels and versions available so far, in particular
   it is designed and tested to work with level 3 version 2 SBML or earlier. By means
   of its functions, the package can provide either a complete extraction, resulting
@@ -35,13 +35,32 @@ knitr::opts_chunk$set(
 ```
 
 
-The aim of this package is to supply easy extraction and manipulation of SBML information by insertion in tabular data structure. Because of descriptive nature of SBML documents, the dataframe format is particularly suitable for easily access data and be able to perform subsequent analysis. Specially, this type of convertion enables easy data interrogation by means of tidyverse verbs in order to facilitate, for instance, usage of `biomaRt` and `igraph`-like packages.
-In the following, it is useful to distinguish the SBML tags names using *italic* and the R commands with `teletype` fonts, respectively. Also, the terms 'tag' and 'component' are used interchangeably. The components of main interest for this package are *listOfCompartments*, *listOfSpecies* and *listOfReactions*. Besides the conversion in dataframes for each of these components, it is also possible to select the columns of interest, choosing one of the following three sets: (i) Attributes, involving tags such as *id*, *metaid*, *name*, etc.; (ii) Notes, consisting only of *notes* tag and (iii) Annotation, whose qualifiers are tags like *bqmodel:is*, *bqbiol:is*, *bqbiol:hasPart*, etc. Each tag is exported in one separate column. Columns for tags in the Attributes set are named as the tag name, notes column is named 'notes', while Annotation columns are prefixed by 'annotation_' followed by tag name after colon symbol (':'), for instance column with *bqbiol:is* tag content is labelled 'annotation_is'. If one entity possesses multiple tags with the same name, the repeated column name is accompanied by a number (from the second copy it starts from '_1'). Whether more values are contained in one tag (e.g. as happens for Annotation tags such as *bqbiol:hasPart*, *bqbiol:isDescribedBy*, or also Notes column) they are separated by delimiters like "\|\|" (for Annotation values) and "\|" (for Notes). 
+The aim of this package is to supply easy extraction and manipulation of SBML information by insertion in tabular data structures. Because of descriptive nature of SBML documents, the dataframe format is particularly suitable for easily access data and be able to perform subsequent analysis. Specially, this type of conversion enables easy data interrogation by means of tidyverse verbs in order to facilitate, for instance, usage of `biomaRt` and `igraph`-like packages. 
+The involvement in the Bioconductor project establishes a direct and consistent connection with bioinformatics community while providing cooperation of tools useful also within the frame of systems biology and, in general, for the analysis of biological data. 
 
 In order to illustrate the package functioning, we used as examples an SBML file [@sbml_l3v2]
 extracted from Reactome [@reactome_db], an open-source, open-access and peer-reviewed biological pathway database. Namely, the pathway is the "Aryl hydrocarbon receptor signalling" (R-HSA-8937144 [@R-HSA-8937144]).
 
-In first two sections are described the tidysbml steps to follow for SBML conversion, while in the last one are shown some examples to integrate tidysbml dataframes with other Bioconductor packages (i.e. biomaRt and RCy3)
+After providing installation instructions, the first section describes the dataframes structure, in the subsequent two sections are described the tidysbml steps to follow for pursuing the SBML conversion, while in the last one are shown some examples to integrate tidysbml dataframes with other Bioconductor packages (i.e. biomaRt and RCy3). 
+In the following, it is useful to distinguish the SBML tags names using *italic* and the R commands with `teletype` fonts, respectively. Also, the terms 'tag' and 'component' are used interchangeably.
+
+
+## Installation
+
+To install *tidysbml* from Bioconductor, run
+```{r installation, eval = FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("tidysbml")
+```
+
+
+## General dataframes structure 
+The SBML components of main interest for this package are *listOfCompartments*, *listOfSpecies* and *listOfReactions*. 
+Due to the underlying SBML format, these dataframes may generally consist of the following three sets of columns: (i) Attributes, involving tags such as *id*, *metaid*, *name*, etc., (ii) Notes, consisting only of *notes* tag and (iii) Annotation, whose qualifiers are tags like *bqmodel:is*, *bqbiol:is*, *bqbiol:hasPart*, etc. Each tag is exported in one separate column. Columns for tags in the Attributes set are named as the tag name, notes column is named 'notes', while Annotation columns are prefixed by 'annotation_' followed by tag name after colon symbol (':'), for instance column with *bqbiol:is* tag content is labelled 'annotation_is'. If one entity possesses multiple tags with the same name, the repeated column name is accompanied by a number (from the second copy it starts from '_1'). Whether more values are contained in one tag (e.g. as happens for Annotation tags such as *bqbiol:hasPart*, *bqbiol:isDescribedBy*, or also Notes column) they are separated by delimiters like " " (i.e. single space character) for Annotation values and "\|" (i.e. pipe character) for Notes. 
+Also, based on the selected component, the respective dataframe may contain other columns, depending on the xml structure of the underlying component's class. See for instance the `df_species_in_reactions` dataframe described in the following.
+
 
 ## Converting SBML into a R list
 
@@ -72,11 +91,12 @@ list_species <- sbml_as_list(filepath, component = "species")
 
 which yields an SBML-converted list of lists starting from the *listOfSpecies* tag, that is contained inside the *sbml* and *model* tags. This last output is required in case the user is interested in the extraction of only one dataframe, e.g., using the `as_df()` function, as described in the following section.
 
+
 ## Converting SBML into dataframes
 
 The main function of this package is `as_dfs()`, which is able to provide the SBML information about Compartments, Species and Reactions in a tabular format. It returns a list of at most 4 dataframes, depending on the components reported inside the SBML selected.
 
-The dataframe for *listOfCompartments* (*listOfSpecies*) component, named `df_listOfCompartments` (`df_listOfSpecies`), has one row for each Compartment (Species) and one column for each Attributes, Notes and Annotation value. Similarly, the first dataframe about Reactions (i.e. `df_listOfReactions`) contains one row for each Reaction with their Attributes, Notes and Annotation values as columns, while the second one (i.e. `df_speciesWithinReactions`) has one row for each Species involved in each Reaction, here with the addition of two more columns: the `reaction_id` column, with information about the corresponding Reaction identificator reported in the SBML document, and the `container_list` column, with the name of the listOf element containing that Species (i.e. *listOfReactants*, *listOfProducts*, *listOfModifiers*). It is possible to use as first argument the SBML file path
+The dataframe for *listOfCompartments* (*listOfSpecies*) component, named `df_compartments` (`df_species`), has one row for each Compartment (Species) and one column for each Attributes, Notes and Annotation value. Similarly, the first dataframe about Reactions (i.e. `df_reactions`) contains one row for each Reaction with their Attributes, Notes and Annotation values as columns, while the second one (i.e. `df_species_in_reactions`) has one row for each Species involved in each Reaction, here with the addition of two more columns: the `reaction_id` column, with information about the corresponding Reaction identificator reported in the SBML document, and the `container_list` column, with the name of the listOf element containing that Species (i.e. *listOfReactants*, *listOfProducts*, *listOfModifiers*). It is possible to use as first argument the SBML file path
 
 ```{r}
 list_of_dfs <- as_dfs(filepath, type = "file")
@@ -94,39 +114,32 @@ Another function, namely `as_df()`, enables the conversion of only one dataframe
 
 ```{r}
 list_species <- sbml_as_list(filepath, component = "species")
-df_listOfSpecies <- as_df(list_species)
+df_species <- as_df(list_species)
 ```
 
-returns one dataframe containing all information about species. Just for *listOfReactions* component is possible to obtain two dataframes. Here `dfs_listOfReactions` is a list of 2 dataframes obtained by
+returns one dataframe containing all information about species. Just for *listOfReactions* component is possible to obtain two dataframes. Here `dfs_about_reactions` is a list of 2 dataframes obtained by
 
 ```{r}
 list_react <- sbml_as_list(filepath, component = "reactions")
-dfs_listOfReactions <- as_df(list_react)
+dfs_about_reactions <- as_df(list_react)
 ```
 
-whose first component, containing info about reactions, returns 15 columns for the 5 reactions of our example
+whose first component, containing information about reactions, returns 15 columns for the 5 reactions of our example
 
 ```{r}
-dfs_listOfReactions[[1]]
+dfs_about_reactions[[1]]
 ```
 
-While `df_speciesWithinReactions`, with info about the 14 species involved in the 5 reactions described above, is obtained by taking the second component `dfs_listOfReactions[[2]]` or also running
+While `df_species_in_reactions`, with information about the 14 species involved in the 5 reactions described above, is obtained by taking the second component 
 
 ```{r}
-df_speciesWithinReactions <- as_subdf(list_react)
+dfs_about_reactions[[2]]
 ```
 
-which returns
+Each function described in this section performs a control on the input format correctness. In particular, it returns errors if the input object is an empty list or not a list object, and also if its format is not suitable for extraction (i.e. SBML tags are not properly named or nested). In particular, the SBML file is accepted by `as_df()` if it contains only one type of tag within the first level of 'listOf' components. For instance, if the SBML is restricted to *listOfSpecies*/*listOfCompartments*/*listOfReactions* tag, the only type of tag within the list should be *species*/*compartment*/*reaction*. One more condition, given only in the `as_dfs()` function, is that the first two tags in the xml hierarchy should be *sbml* and *model*, where the former contains the latter. If any one of these conditions does not hold, the respective functions are not executed.
 
-```{r}
-df_speciesWithinReactions
-```
 
-Other functions are `as_df.attributes()`, `as_df.notes()` and `as_df.annotation()`, which follow the same input rule of `as_df()` but provide only the columns within the Attributes, Notes and Annotation sets, respectively. For instance, looking at `df_listOfReactions`, applying the first function to `list_react` would return the same dataframe as the first one (`dfs_listOfReactions[[1]]`) but with only the first 7 columns (i.e. `names`, `compartment`, `fast`, `id`, `metaid`, `name`, `reversible`), the second function solely the `notes` column, whereas the latter only the columns prefixed by `annotation_`.
-
-Each function described in this section performs a control on the input format correctness. In particular, it returns errors if the input object is an empty list or not a list object, and also if its format is not suitable for extraction (i.e. SBML tags are not properly named or nested). In particular, the SBML file is accepted by `as_df()`, and all the other functions which return only one dataframe, if it contains only one type of tag within the first level of 'listOf' components. For instance, if the SBML is restricted to *listOfSpecies*/*listOfCompartments*/*listOfReactions* tag, the only type of tag within the list should be *species*/*compartment*/*reaction*. One more condition, given only in the `as_dfs()` function, is that the first two tags in the xml hierarchy should be *sbml* and *model*, where the former contains the latter. If any one of these conditions does not hold, the respective functions are not executed.
-
-### Integration with Bioconductor packages
+## Integration with Bioconductor packages
 
 This section provides R code to incorporate tidysbml dataframes with other Bioconductor packages. Here are shown examples of integration for RCy3 [@rcy3] and biomaRt [@biomart] packages. 
 
@@ -134,11 +147,11 @@ RCy3 package permits communication between R and Cytoscape softwares. After laun
 
 ```{r eval=FALSE}
 library(dplyr)
-edgelist <- df_speciesWithinReactions %>% select("reaction_id", "species") %>% `colnames<-`(c("source", "target"))
+edgelist <- df_species_in_reactions %>% select("reaction_id", "species") %>% `colnames<-`(c("source", "target"))
 RCy3::createNetworkFromDataFrames(edges = edgelist) # while running Cytoscape
 ```
 
-BiomaRt, instead, is an annotation package providing access to external public databases. One possible usage, for instance, is to visualize info about Uniprot ids reported in SBML for Species, here considering only those composed by multiple entities (i.e. multiple ids). First, extract URIs data about species from Annotation column with *bqbiol:hasPart* content
+BiomaRt, instead, is an annotation package providing access to external public databases. One possible usage, for instance, is to visualize information about Uniprot ids reported in SBML for Species, here considering only those composed by multiple entities (i.e. multiple ids). First, extract URIs data about species from Annotation column with *bqbiol:hasPart* content
 
 ```{r}
 vec_uri <- na.omit( unlist(
@@ -174,7 +187,7 @@ vec_ids <- vapply(vec_uniprot, function(x){
 
 Then, using biomaRt commands, user can set attributes information to look at
 
-```{r}
+```{r biomaRt}
 library(biomaRt)
 mart <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
 df_mart_uniprot <- getBM( attributes = c("uniprot_gn_id", "uniprot_gn_symbol",   "description"),
@@ -183,5 +196,13 @@ df_mart_uniprot <- getBM( attributes = c("uniprot_gn_id", "uniprot_gn_symbol",  
                           mart = mart)
 df_mart_uniprot
 ```
+
+
+### Session info
+
+```{r sessionInfo}
+sessionInfo()
+```
+
 
 ### References

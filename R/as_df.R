@@ -8,6 +8,8 @@
 #'
 #' @param sbml_list_listOf sbml converted into a list restricted to a 'listOf' level (e.g. listOfSpecies), a list
 #'
+#' @importFrom methods is
+#'
 #' @return one dataframe (or a list of two dataframes) containing information about the entities in the input list
 #' @export
 #'
@@ -15,26 +17,31 @@
 #' filepath <- system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml")
 #'
 #' sbml_list <- sbml_as_list(filepath, "species")
-#' df <- as_df(sbml_list)  ## returns one dataframe with data about the species saved in the sbml document
+#' df <- as_df(sbml_list) ## returns one dataframe with data about the species saved in the sbml document
 #'
 #' sbml_list <- sbml_as_list(filepath, "reactions")
-#' df <- as_df(sbml_list)  ## returns one list containing two dataframe with data about the reactions and the speciesReferences listed in the sbml document
-as_df <- function (sbml_list_listOf) {
+#' df <- as_df(sbml_list) ## returns one list containing two dataframe with data about the reactions and the speciesReferences listed in the sbml document
+as_df <- function(sbml_list_listOf) {
+  # Check input conditions:
+  if (missing(sbml_list_listOf)) stop("no argument inserted. You must provide one list in input.")
+  if (!typeof(sbml_list_listOf) == "list") stop("argument is not a list")
+  if (!length(sbml_list_listOf)) stop("empty output. List of length 0 inserted.")
+  if (length(unique(names(sbml_list_listOf))) != 1 || !all(unique(names(sbml_list_listOf)) %in% c("species", "reaction", "compartment"))) stop("invalid format for list in input : it must contain only one type of element, that is either 'species','reaction' or 'compartment' type")
 
   df_attributes <- as_df.attributes(sbml_list_listOf)
   df_notes <- as_df.notes(sbml_list_listOf)
   df_annotation <- as_df.annotation(sbml_list_listOf)
   subdf <- as_subdf(sbml_list_listOf)
 
-  if(length(df_attributes)){
+  if (length(df_attributes)) {
     df <- data.frame(df_attributes)
-    if(methods::is(df_notes,"data.frame")) df <- data.frame(df,df_notes)
-    if(methods::is(df_annotation,"data.frame")) df <- data.frame(df,df_annotation)
+    if (methods::is(df_notes, "data.frame")) df <- data.frame(df, df_notes)
+    if (methods::is(df_annotation, "data.frame")) df <- data.frame(df, df_annotation)
   }
 
-  if(methods::is(subdf,"data.frame")){
-    list(df,subdf)
-  }else{
+  if (methods::is(subdf, "data.frame")) {
+    list(df, subdf)
+  } else {
     df
   }
 }

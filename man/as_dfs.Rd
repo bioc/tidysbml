@@ -4,7 +4,7 @@
 \alias{as_dfs}
 \title{Create a list of dataframes (full extraction)}
 \usage{
-as_dfs(sbml, type = "list")
+as_dfs(sbml, type = "file")
 }
 \arguments{
 \item{sbml}{either the path of the sbml file or the sbml already converted into a list, that is either a character string or a list respectively}
@@ -19,13 +19,13 @@ It takes in input a sbml file (or sbml list) and returns a list of maximum 3 com
 }
 \details{
 This is the main function of the package. It comprehends all the other functions.
-Since it incorporates also the sbml_as_list() function it is possible to insert as input either the sbml path or the sbml already converted into a list. This is set up using the argument 'type' which has to be 'file' or 'list' (default), respectively.
+Since it incorporates also the sbml_as_list() function it is possible to insert as input either the sbml path or the sbml already converted into a list. This is set up using the argument 'type' which has to be 'file' or 'list', respectively.
 }
 \examples{
 filepath <- system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml")
 
 sbml_list <- sbml_as_list(filepath)
-as_dfs(sbml_list)  ## returns a list of dataframes, giving in input the sbml already converted into a list
+as_dfs(sbml_list, type = "list") ## returns a list of dataframes, giving in input the sbml already converted into a list
 
-as_dfs(filepath, type = "file")  ## returns a list of dataframes, giving in input the sbml path
+as_dfs(filepath, type = "file") ## returns a list of dataframes, giving in input the sbml path
 }

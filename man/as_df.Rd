@@ -24,8 +24,8 @@ Each dataframe contains at least one column, since some attributes are mandatory
 filepath <- system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml")
 
 sbml_list <- sbml_as_list(filepath, "species")
-df <- as_df(sbml_list)  ## returns one dataframe with data about the species saved in the sbml document
+df <- as_df(sbml_list) ## returns one dataframe with data about the species saved in the sbml document
 
 sbml_list <- sbml_as_list(filepath, "reactions")
-df <- as_df(sbml_list)  ## returns one list containing two dataframe with data about the reactions and the speciesReferences listed in the sbml document
+df <- as_df(sbml_list) ## returns one list containing two dataframe with data about the reactions and the speciesReferences listed in the sbml document
 }

@@ -1,20 +1,25 @@
 Package: tidysbml
 Type: Package
 Title: Extract SBML's data into dataframes
-Version: 0.99.6
+Version: 0.99.7
 Authors@R: person("Veronica", "Paparozzi", role = c("aut", "cre"), email = "veronicapaparozzi1@gmail.com", comment = c(ORCID = "0009-0000-2961-1559"))
-Description: Starting from one SBML file, it is possible to extract its information from each listOfCompartments, listOfSpecies and listOfReactions element by saving them into data frames. Each table provides one row for each entity (i.e. either compartment, species, reaction or speciesReference) and one set of columns for the attributes, one column for the content of the 'notes' subelement and one set of columns for the content of the 'annotation' subelement. 
+Description: Starting from one SBML file, it extracts information from each listOfCompartments, listOfSpecies and listOfReactions element by saving them into data frames. Each table provides one row for each entity (i.e. either compartment, species, reaction or speciesReference) and one set of columns for the attributes, one column for the content of the 'notes' subelement and one set of columns for the content of the 'annotation' subelement. 
 License: CC BY 4.0
 Encoding: UTF-8
 RoxygenNote: 7.3.1
 Imports: 
   xml2,
   methods
+Depends: R (>= 4.3.0)
 Suggests: 
     rmarkdown,
     knitr,
     BiocStyle,
     biomaRt,
-    RCy3
+    RCy3,
+    testthat (>= 3.0.0)
 biocViews: GraphAndNetwork, Network, Pathways, Software
 VignetteBuilder: knitr
+URL: https://github.com/veronicapaparozzi/tidysbml
+BugReports: https://github.com/veronicapaparozzi/tidysbml/issues
+Config/testthat/edition: 3
