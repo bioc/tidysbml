@@ -1,4 +1,14 @@
-tidysbml version 0.99.7 (Release date: 2024-09-) : 
+tidysbml version 0.99.10 (Release date: 2024-09-16) : 
+
+- update after Bioconductor second review (R version >=4.4.0)
+
+----------------------------------------------
+tidysbml versions 0.99.9 and 0.99.8 (Release date: 2024-09-05) : 
+
+- fixing biocCheck issue
+
+----------------------------------------------
+tidysbml version 0.99.7 (Release date: 2024-09-05) : 
 
 - edit DESCRIPTION: inserted R version, URL, BugReports
 - add unit tests

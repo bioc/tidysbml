@@ -5,8 +5,8 @@
 # @param list_notes list object where the notes' values have to be extracted from, a list
 #
 # @return notes' value to be inserted in one dataframe's cell, a character string
-as_value.notes <- function(list_notes, sep = "|") { # , vec_notes_i){    # I think you cannot have multiple notes elements within on entity
-
+as_value.notes <- function(list_notes, sep = "|") {
+  
   if (length(list_notes) == 0) {
     return("Empty")
   } else {
@@ -17,7 +17,7 @@ as_value.notes <- function(list_notes, sep = "|") { # , vec_notes_i){    # I thi
         if (!is.null(list_temp)) {
           list_temp[[1]]
         } else { # empty paragraph
-          NA
+          ""
         }
       } else if (x == "html") {
         paste(xml2::as_xml_document(list_notes))
@@ -28,7 +28,7 @@ as_value.notes <- function(list_notes, sep = "|") { # , vec_notes_i){    # I thi
         "extraction not available"
       }
     }, character(1))
-
+    
     return(paste(vec_notes_i, collapse = sep))
   }
 }
@@ -46,15 +46,15 @@ as_value.notes <- function(list_notes, sep = "|") { # , vec_notes_i){    # I thi
 # sbml_list <- sbml_as_list(system.file("extdata", "R-HSA-8937144.sbml", package = "tidysbml"), "species")
 # df <- as_df.notes(sbml_list)  ## returns the dataframe with only one column containing the notes' info
 as_df.notes <- function(sbml_list_listOf) {
-  vec_notes <- sapply(seq_along(sbml_list_listOf), function(i) {
+  vec_notes <- unlist(lapply(seq_along(sbml_list_listOf), function(i) {
     vec_which_notes <- which(names(sbml_list_listOf[[i]]) == "notes")
     if (length(which(names(sbml_list_listOf[[i]]) == "notes")) == 1) {
       as_value.notes(sbml_list_listOf[[i]][[which(names(sbml_list_listOf[[i]]) == "notes")]])
-    } else {
+    } else { # if length 0
       NA
     }
-  })
-
+  }))
+  
   if (all(is.na(vec_notes))) {
     message("Empty notes' column for '", unique(names(sbml_list_listOf)), "' elements")
     c()
