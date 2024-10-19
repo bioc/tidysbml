@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "tidysbml: R/Bioconductor package for SBML extraction into dataframes",
+  author   = as.person("Veronica Paparozzi [aut], Christine Nardini [aut]"),
+  journal  = "Bioinformatics Advances",
+  year     = "2024",
+  volume   = "4",
+  number   = "1",
+  pages    = "vbae148",
+  doi      = "10.1093/bioadv/vbae148"
+)

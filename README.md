@@ -4,7 +4,7 @@ The package provides conversion from a SBML document to R dataframes. SBML compo
 
 # Installation 
 
-To install the package from Bioconductor (when submission will be concluded), run 
+To install the package from Bioconductor, run 
 ```
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -19,6 +19,14 @@ if (!require("devtools", quietly = TRUE))
     install.packages("devtools")
 
 devtools::install_github("veronicapaparozzi/tidysbml", build_vignettes = TRUE)
+```
+
+# Citation
+
+To get citation information use 
+
+```
+citation("tidysbml")
 ```
 
 ## Contact 
